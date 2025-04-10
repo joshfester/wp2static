@@ -23,11 +23,30 @@ jobs:
         composer install --quiet --no-dev --optimize-autoloader
         
     - name: Create build archive
-      run: ./tools/build_release.sh
+      run: |
+        mkdir -p wp2static
+        rsync -r \
+          --include="/*.php" \
+          --include="/src/" \
+          --include="/src/**" \
+          --include="/vendor/" \
+          --include="/vendor/**" \
+          --include="/views/" \
+          --include="/views/**" \
+          --include="/css/" \
+          --include="/css/**" \
+          --include="/js/" \
+          --include="/js/**" \
+          --exclude="*" \
+          ./ wp2static/
+        find wp2static -type d -exec chmod 755 {} \;
+        find wp2static -type f -exec chmod 644 {} \;
+        zip --quiet -r -9 wp2static.zip wp2static
         
-    - name: Upload build artifact
-      uses: actions/upload-artifact@v4
+    - name: Create Release
+      id: create_release
+      if: github.ref_type == 'tag'
+      uses: softprops/action-gh-release@v1
       with:
-        name: wp2static
-        path: wp2static.zip
-        retention-days: 90
+        files: wp2static.zip
+        generate_release_notes: true
