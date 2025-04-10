@@ -46,17 +46,8 @@ cd "$TMP_DIR" || exit
 find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
 
-zip --quiet -r -9 "./$1.zip" ./wp2static
+zip --quiet -r -9 "./wp2static.zip" ./wp2static
 
 cd - || exit
 
-mkdir -p "$HOME/Downloads/"
-
-cp "$TMP_DIR/$1.zip" "$HOME/Downloads/"
-
-# reset dev dependencies
-cd "$EXEC_DIR" || exit
-# clear dev dependencies
-rm -Rf "$EXEC_DIR/vendor/*"
-# load prod deps
-composer install --quiet
+cp "$TMP_DIR/wp2static.zip" "$GITHUB_WORKSPACE/"
