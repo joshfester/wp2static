@@ -31,6 +31,6 @@ jobs:
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
-        name: plugin-build
+        name: wp2static
         path: wp2static.zip
         retention-days: 90
