@@ -23,11 +23,14 @@ jobs:
         composer install --no-dev --optimize-autoloader
         
     - name: Create build archive
-      run: zip -r build.zip . -x "*.git*" ".github/*" "integration-tests/*" "tests/*" "nix/*" "tools/*"
+      run: |
+        mkdir -p wp2static
+        rsync -a --exclude=".git" --exclude=".github" --exclude="integration-tests" --exclude="tests" --exclude="nix" --exclude="tools" --exclude="wp2static" . wp2static/
+        zip -r wp2static.zip wp2static
         
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
-        name: php-build
-        path: build.zip
+        name: plugin-build
+        path: wp2static.zip
         retention-days: 90
