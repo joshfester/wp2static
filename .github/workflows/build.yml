@@ -20,13 +20,13 @@ jobs:
 
     - name: Build
       run: |
-        composer install --no-dev --optimize-autoloader
+        composer install --quiet --no-dev --optimize-autoloader
         
     - name: Create build archive
       run: |
         mkdir -p wp2static
         rsync -a --exclude=".git" --exclude=".github" --exclude="integration-tests" --exclude="tests" --exclude="nix" --exclude="tools" --exclude="wp2static" . wp2static/
-        zip -r wp2static.zip wp2static
+        zip --quiet -r -9 wp2static.zip wp2static
         
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
