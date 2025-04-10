@@ -46,7 +46,7 @@ cd "$TMP_DIR" || exit
 find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
 
-zip --quiet -r -9 "./wp2static.zip" ./wp2static
+zip --quiet -r -9 -X "./wp2static.zip" ./wp2static
 
 cd - || exit
 
