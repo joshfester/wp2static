@@ -2,7 +2,8 @@ name: Build Plugin Zip File
 
 on:
   push:
-    branches: [ main ]
+    tags:
+      - "v*.*.*"
 
 jobs:
   build:
@@ -43,9 +44,7 @@ jobs:
         find wp2static -type f -exec chmod 644 {} \;
         zip --quiet -r -9 wp2static.zip wp2static
         
-    - name: Create Release
-      id: create_release
-      if: github.ref_type == 'tag'
+    - name: Release
       uses: softprops/action-gh-release@v1
       with:
         files: wp2static.zip
